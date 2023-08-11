@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {} from "react";
+import EmptyCart from "../assets/empty_cart.svg"
+import { Link } from "react-router-dom/cjs/react-router-dom";
 
-const Cart = ({ cart, changeQuantity }) => {
+const Cart = ({ cart, changeQuantity, removeItem }) => {
     const total = () => {
         let price = 0;
         cart.forEach ((item) => {
@@ -38,7 +40,7 @@ const Cart = ({ cart, changeQuantity }) => {
                                                 {book.title}
                                             </span>
                                             <span className="cart__book--price">{(book.salePrice || book.originalPrice).toFixed(2)}</span>
-                                            <button className="cart__book--remove">
+                                            <button className="cart__book--remove" onClick={() => removeItem (book)}>
                                                 Remove
                                             </button>
                                         </div>
@@ -53,10 +55,21 @@ const Cart = ({ cart, changeQuantity }) => {
                                         )
                                     })
                                 }
+
+                                {
+                                    cart.length === 0 && ( <div className="cart__empty">
+                                <img src={EmptyCart} alt="" className="cart__empty--img" />
+                                <h2>You dont have any books in your cart!</h2>
+                                <Link to="/books">
+                                <button className="btn">Browse books</button>
+                                </Link>
+                            </div>)
+                                }
                                 
                             </div>
+                           
                         </div>
-                        <div className="total">
+                        {cart.length > 0 &&<div className="total">
                             <div className="total__item total__sub-total">
                                 <span>Subtotal</span>
                                 <span>${(total() * 0.9).toFixed(2)}</span>
@@ -73,7 +86,7 @@ const Cart = ({ cart, changeQuantity }) => {
                             onClick={() => alert(`Hvent't got around to doing it :(`)}>
                                 Proceed to checkout
                             </button>
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </main>
